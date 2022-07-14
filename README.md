@@ -8,7 +8,7 @@ A composite structure model for single-cell RNA-seq imputation
 ## <a name="installAGImpute"></a>Install AGImpute
 - **Download** 
 ```
-git clone https://github.com/MengShuang-ping/AGImpute.git
+git clone https://github.com/xszhu-lab/AGImpute.git
 cd AGImpute
 ```
 ## <a name="installdependences"></a>Install dependences
@@ -18,7 +18,7 @@ AGImpute is implemented in `python`(>3.8) and `pytorch`(>10.1) or `cuda`(11.4),P
  pip install -r requirements.txt 
  ```
 
-## Use AGImpute
+## Commands and options
 ```
 python3 AGImpute.py --help
 ```
@@ -47,7 +47,6 @@ Usage:AGImpute.py [OPRIONS]
     --outdir                    The directory for output.
 ```
 
-### Commands and options
 ### Input file format
 ### Output files
 ### Run with Testdata
