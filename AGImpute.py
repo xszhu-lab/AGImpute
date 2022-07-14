@@ -73,7 +73,7 @@ def scanpy_proce_variabel_gene(data, gene_num):
     out = pd.DataFrame(adata.X)
     out.index = adata.obs.iloc[0:, 0]
     out.columns = adata.var.index
-    sc.pp.neighbors(adata, n_neighbors=5, n_pcs=40)
+    sc.pp.neighbors(adata, n_neighbors=5, n_pcs=40, use_rep='X')
     sc.tl.leiden(adata)
     sc.pp.highly_variable_genes(adata, flavor='cell_ranger', n_top_genes=gene_num)
     variabel_gene = pd.DataFrame(adata.var[adata.var['highly_variable']].index)
