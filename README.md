@@ -9,7 +9,7 @@ A composite structure model for single-cell RNA-seq imputation
 - [Run with Testdata](#runwithtestdata)
 
 ## <a name="installAGImpute"></a>Install AGImpute
-- **Download** 
+- **Download** We can download the code from github：
 ```
 git clone https://github.com/xszhu-lab/AGImpute.git
 cd AGImpute
