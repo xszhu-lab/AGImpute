@@ -4,6 +4,9 @@ A composite structure model for single-cell RNA-seq imputation
 ## Tabel of Contents
 - [Install AGImpute](#installAGImpute)
 - [Install dependences](#installdependences)
+- [Input file format](#inputfileformat)
+- [Output files](#outputfiles)
+- [Run with Testdata](#runwithtestdata)
 
 ## <a name="installAGImpute"></a>Install AGImpute
 - **Download** 
@@ -47,7 +50,13 @@ Usage:AGImpute.py [OPRIONS]
     --outdir                    The directory for output.
 ```
 
-### Input file format
-！[image](https://github.com/xszhu-lab/AGImpute/blob/main/images/expression%20matrix.png)
-### Output files
-### Run with Testdata
+### <a name="inputfileformat"></a>Input file format
+Our input requires a `CSV` file, the `index` should be `cell`, and the `column` should be `gene`.
+
+![image](https://github.com/xszhu-lab/AGImpute/blob/main/images/expression%20matrix.png)
+
+### <a name="outputfiles"></a>Output files
+### <a name="runwithtestdata"></a>Run with Testdata
+```
+python AGImpute.py --name sim_counts --file_c ./Testdata 
+```
