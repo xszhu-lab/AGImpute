@@ -1,0 +1,8 @@
+torch
+torchvision
+pandas
+numpy
+scipy
+scanpy
+leidenalg
+scikit-learn
