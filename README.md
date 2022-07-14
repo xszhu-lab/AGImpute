@@ -48,5 +48,6 @@ Usage:AGImpute.py [OPRIONS]
 ```
 
 ### Input file format
+！[image](https://github.com/xszhu-lab/AGImpute/blob/main/images/expression%20matrix.png)
 ### Output files
 ### Run with Testdata
