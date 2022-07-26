@@ -44,8 +44,8 @@ Usage:AGImpute.py [OPRIONS]
     --D_throd                   Dropout events threshold positioning algorithm confidence value.
     --feature_gene_num          Number selection of Feature Genes
     --dim_thord                 Latent-dim throd.
-    --name                      Name of h5ad.
-    --file_c                    Path of h5ad file.
+    --name                      Name of CSV.
+    --file_c                    Path of CSV file.
     --file_model                Path of model file.
     --outdir                    The directory for output.
 ```
