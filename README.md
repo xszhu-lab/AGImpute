@@ -60,5 +60,5 @@ We will generate a `GAN_models` file for saving the GAN model under the target p
 ### <a name="runwithtestdata"></a>Run with Testdata
 We can quickly start AGImpute：
 ```
-python AGImpute.py --name sim_counts --file_c ./Testdata 
+python AGImpute.py --name sim_counts --file_c ./Testdata/ 
 ```
