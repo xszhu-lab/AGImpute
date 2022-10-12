@@ -130,7 +130,7 @@ if opt.GPU:
                     optimizer_automodel.zero_grad()
                     train_pre = automodel(data_tensor_noise)
                     loss = loss_fn(train_pre[1], data_tensor).cuda()
-                    print("AUTOENCODER_LOSS", loss)
+                    sys.stdout.write("\r[AUTOENCODER_LOSS: %f]" % (loss))
                     loss.backward()
                     optimizer_automodel.step()
 
@@ -477,7 +477,7 @@ else:
                     optimizer_automodel.zero_grad()
                     train_pre = automodel(data_tensor_noise)
                     loss = loss_fn(train_pre[1], data_tensor)
-                    print("AUTOENCODER_LOSS", loss)
+                    sys.stdout.write("\r[AUTOENCODER_LOSS: %f]" % (loss))
                     loss.backward()
                     optimizer_automodel.step()
                     running_loss += loss.item()
