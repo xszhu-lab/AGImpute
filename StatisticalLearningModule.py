@@ -143,6 +143,10 @@ def calculateweight(data, fai, k):
         norsum = 0
         for i in observation:
             norsum += np.power((i - xi), 2)
+            if norsum == 0:
+                norsum=1
+        if zeta == 0:
+            zeta=1
         dominator_m_b = (1 - theta) * (1 / (math.sqrt(2 * math.pi) * zeta)) * np.exp(
             -(norsum) / (2 * np.power(zeta, 2)))
         dominator = dominator_d / (dominator_m_a + dominator_m_b)
