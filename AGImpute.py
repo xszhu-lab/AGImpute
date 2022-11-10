@@ -40,8 +40,11 @@ opt = parser.parse_args()
 
 
 def subclustering(data, clu_num):
-    kmean = KMeans(n_clusters=clu_num).fit(data)
-    cluster_label = kmean.labels_
+    if clu_num > 1:
+        kmean = KMeans(n_clusters=clu_num).fit(data)
+        cluster_label = kmean.labels_
+    else:
+        cluster_label = 0
     return cluster_label
 
 
