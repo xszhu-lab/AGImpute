@@ -318,7 +318,7 @@ if opt.GPU:
             label_oh = one_hot(torch.from_numpy(np.repeat(i, sim_size)).type(torch.LongTensor), max_ncls).type(Tensor)
             z = Variable(Tensor(np.random.normal(0, 1, (sim_size, latent_dim))))
 
-            fake_imgs = generator(z, label_oh).detach().data.numpy()
+            fake_imgs = generator(z, label_oh).cpu().detach().data.numpy()
             for i in range(fake_imgs.shape[0]):
                 for j in range(fake_imgs.shape[1]):
                     li = []
@@ -327,7 +327,7 @@ if opt.GPU:
                     result.append(li)
             tensor_pd_result = torch.from_numpy(np.asarray(result)).to(torch.float32)
             de_result = automodel.decoder(tensor_pd_result).cuda()
-            de_result_num = de_result.detach().numpy()
+            de_result_num = de_result.cpu().detach().numpy()
             de_pd_result = pd.DataFrame(de_result_num, index=label_data_li.index,
                                         columns=label_data_li.columns)
             de_pd_result_li = de_pd_result.copy()
@@ -415,16 +415,20 @@ if opt.GPU:
         num_g = 0
         num_i = 0
         print("Begin Impute")
-        for i in dropoutevent:
-            if i[1] in feature_gene:
-                num_g += 1
-                target_label = clu_label_ar[i[0]]
-                cut_data = label_data[label_data.iloc[:, -1] == target_label]
-                por_zero = sum(cut_data.iloc[:, i[0]] == 0) / cut_data.shape[0]
-                if por_zero < 0.95:  # 共表达
-                    value = out_result.loc[li_data.index[i[0]], li_data.columns[i[1]]]
-                    li_data.iloc[i[0], i[1]] = value
-                    num_i += 1
+        for i in feature_gene:
+            print("feature_gene",i)
+            for j in np.unique(clu_label_ar):
+                cut_data = label_data[label_data.iloc[:, -1] == j]
+                por_label_index = label_data[label_data.iloc[:, -1] == j].index
+                por_zero = sum(cut_data.iloc[:, i] == 0) / cut_data.shape[0]
+
+                num_g+=1
+                if por_zero < 0.95:
+                    for k in dropoutevent:
+                        if k[1] == i and k[0] in por_label_index:
+                            value = out_result.iloc[k[0],k[1]]
+                            li_data.iloc[k[0], k[1]] = value
+                            num_i+=1
 
         impute_data = li_data
         out_dir = opt.outdir + '/result'
@@ -752,16 +756,20 @@ else:
         print("Estimating dropout events locations")
         dropoutevent = dropoutenventcal(data, clu_label_ar)
         print("Begin Impute")
-        for i in dropoutevent:
-            if i[1] in feature_gene:
-                num_g += 1
-                target_label = clu_label_ar[i[0]]
-                cut_data = label_data[label_data.iloc[:, -1] == target_label]
-                por_zero = sum(cut_data.iloc[:, i[0]] == 0) / cut_data.shape[0]
+        for i in feature_gene:
+            print("feature_gene",i)
+            for j in np.unique(clu_label_ar):
+                cut_data = label_data[label_data.iloc[:, -1] == j]
+                por_label_index = label_data[label_data.iloc[:, -1] == j].index
+                por_zero = sum(cut_data.iloc[:, i] == 0) / cut_data.shape[0]
+
+                num_g+=1
                 if por_zero < 0.95:
-                    value = out_result.loc[li_data.index[i[0]], li_data.columns[i[1]]]
-                    li_data.iloc[i[0], i[1]] = value
-                    num_i += 1
+                    for k in dropoutevent:
+                        if k[1] == i and k[0] in por_label_index:
+                            value = out_result.iloc[k[0],k[1]]
+                            li_data.iloc[k[0], k[1]] = value
+                            num_i+=1
         impute_data = li_data
         out_dir = opt.outdir + '/result'
         if os.path.isdir(out_dir) != True:
