@@ -33,17 +33,17 @@ Usage:AGImpute.py [OPRIONS]
     --GPU                       Use GPU for AGImpute.
     --batch_size                Size of the batches.
     --lr                        Adam: learning rate.
-    --K                         K parameters.
-    --channels                  Number of image channels.
+    --K                         K parameters,generator random distribution control distribution.
+    --channels                  Data iterator channel number parameter.
     --img_size                  Training set size.
     --epochs_a                  Number of epochs of training autoencoder.
     --epochs_g                  Number of epochs of training gan.
     --b1                        Adam: decay of first order momentum of gradient.
     --b2                        Adam: decay of first order momentum of gradient.
-    --gamma                     Gamma parameters.
+    --gamma                     Optimal model distribution calculation:Gamma parameters.
     --D_throd                   Dropout events threshold positioning algorithm confidence value.
     --feature_gene_num          Number selection of Feature Genes
-    --dim_thord                 Latent-dim throd.
+    --dim_thord                 Latent-dim throd of .
     --name                      Name of CSV.
     --file_c                    Path of CSV file.
     --file_model                Path of model file.
