@@ -391,9 +391,9 @@ if opt.GPU:
 
         data = proce_data
         feature_gene = []
-        for i in range(data.shape[1]):
-            if data.columns[i] in variable_gene.values:
-                feature_gene.append(i)
+        for i in variable_gene.iloc[:, 0].values:
+            ind = np.where(data.columns == i)[0][0]
+            feature_gene.append(ind)
 
         label_name = "pre_leida_clu-" + opt.name
         label_exists = os.path.isfile(opt.file_model + label_name + '.csv')
@@ -412,23 +412,15 @@ if opt.GPU:
         out_result = train_gan(data, clu_label_ar, opt.img_size)
         print("Estimating dropout events locations")
         dropoutevent = dropoutenventcal(data, clu_label_ar)
-        num_g = 0
-        num_i = 0
         print("Begin Impute")
-        for i in feature_gene:
-            print("feature_gene",i)
-            for j in np.unique(clu_label_ar):
-                cut_data = label_data[label_data.iloc[:, -1] == j]
-                por_label_index = label_data[label_data.iloc[:, -1] == j].index
-                por_zero = sum(cut_data.iloc[:, i] == 0) / cut_data.shape[0]
-
-                num_g+=1
+        for i in dropoutevent:
+            if i[1] in feature_gene:
+                target_label = clu_label_ar[i[0]]
+                cut_data = label_data[label_data.iloc[:, -1] == target_label]
+                por_zero = sum(cut_data.iloc[:, i[0]] == 0) / cut_data.shape[0]
                 if por_zero < 0.95:
-                    for k in dropoutevent:
-                        if k[1] == i and k[0] in por_label_index:
-                            value = out_result.iloc[k[0],k[1]]
-                            li_data.iloc[k[0], k[1]] = value
-                            num_i+=1
+                    value = out_result.loc[li_data.index[i[0]], li_data.columns[i[1]]]
+                    li_data.iloc[i[0], i[1]] = value
 
         impute_data = li_data
         out_dir = opt.outdir + '/result'
@@ -732,9 +724,9 @@ else:
 
         data = proce_data
         feature_gene = []
-        for i in range(data.shape[1]):
-            if data.columns[i] in variable_gene.values:
-                feature_gene.append(i)
+        for i in variable_gene.iloc[:, 0].values:
+            ind = np.where(data.columns == i)[0][0]
+            feature_gene.append(ind)
 
         label_name = "pre_leida_clu-" + opt.name
         label_exists = os.path.isfile(opt.file_model + label_name + '.csv')
@@ -751,25 +743,17 @@ else:
 
         train_autoencoder(data, clu_label_ar, opt.img_size)
         out_result = train_gan(data, clu_label_ar, opt.img_size)
-        num_g = 0
-        num_i = 0
         print("Estimating dropout events locations")
         dropoutevent = dropoutenventcal(data, clu_label_ar)
         print("Begin Impute")
-        for i in feature_gene:
-            print("feature_gene",i)
-            for j in np.unique(clu_label_ar):
-                cut_data = label_data[label_data.iloc[:, -1] == j]
-                por_label_index = label_data[label_data.iloc[:, -1] == j].index
-                por_zero = sum(cut_data.iloc[:, i] == 0) / cut_data.shape[0]
-
-                num_g+=1
+        for i in dropoutevent:
+            if i[1] in feature_gene:
+                target_label = clu_label_ar[i[0]]
+                cut_data = label_data[label_data.iloc[:, -1] == target_label]
+                por_zero = sum(cut_data.iloc[:, i[0]] == 0) / cut_data.shape[0]
                 if por_zero < 0.95:
-                    for k in dropoutevent:
-                        if k[1] == i and k[0] in por_label_index:
-                            value = out_result.iloc[k[0],k[1]]
-                            li_data.iloc[k[0], k[1]] = value
-                            num_i+=1
+                    value = out_result.loc[li_data.index[i[0]], li_data.columns[i[1]]]
+                    li_data.iloc[i[0], i[1]] = value
         impute_data = li_data
         out_dir = opt.outdir + '/result'
         if os.path.isdir(out_dir) != True:
